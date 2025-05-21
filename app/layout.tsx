@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="font-inter min-h-screen min-w-screen">
-        <FontProvider>
+        {/* <FontProvider> */}
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -24,7 +24,7 @@ export default function RootLayout({
             disableTransitionOnChange>
             {children}
           </ThemeProvider>
-        </FontProvider>
+        {/* </FontProvider> */}
       </body>
     </html>
   );
