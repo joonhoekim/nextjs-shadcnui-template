@@ -23,12 +23,13 @@ export async function GET() {
       message: 'Oracle DB 연결 성공', 
       data: result.rows 
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Oracle DB 연결 오류:', error);
+    const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류';
     return NextResponse.json({ 
       success: false, 
       message: 'Oracle DB 연결 실패', 
-      error: error instanceof Error ? error.message : '알 수 없는 오류'
+      error: errorMessage
     }, { status: 500 });
   }
 }
