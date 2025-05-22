@@ -1,0 +1,92 @@
+[
+  {
+    "id": "1747882076671",
+    "name": "유저테이블 확인",
+    "sql": "SELECT * FROM USER_TABLES",
+    "createdAt": "2025-05-22T02:47:56.671Z"
+  },
+  {
+    "id": "1747882100001",
+    "name": "접근 가능한 모든 테이블 조회",
+    "sql": "SELECT owner, table_name, tablespace_name, status\nFROM all_tables\nWHERE owner NOT IN ('SYS','SYSTEM','OUTLN','DBSNMP')\nORDER BY owner, table_name",
+    "createdAt": "2025-05-22T03:00:00.001Z"
+  },
+  {
+    "id": "1747882100002",
+    "name": "접근 가능한 뷰 조회",
+    "sql": "SELECT owner, view_name, text \nFROM all_views \nWHERE owner NOT IN ('SYS','SYSTEM','OUTLN','DBSNMP')\nORDER BY owner, view_name",
+    "createdAt": "2025-05-22T03:00:00.002Z"
+  },
+  {
+    "id": "1747882100003",
+    "name": "특정 테이블의 컬럼 정보 조회",
+    "sql": "SELECT column_name, data_type, data_length, nullable, data_default, column_id\nFROM all_tab_columns\nWHERE table_name = 'TABLE_NAME' AND owner = 'OWNER_NAME'\nORDER BY column_id",
+    "createdAt": "2025-05-22T03:00:00.003Z"
+  },
+  {
+    "id": "1747882100004",
+    "name": "내가 SELECT 권한을 가진 테이블 조회",
+    "sql": "SELECT owner, table_name\nFROM all_tab_privs\nWHERE privilege = 'SELECT' AND grantee = USER\nORDER BY owner, table_name",
+    "createdAt": "2025-05-22T03:00:00.004Z"
+  },
+  {
+    "id": "1747882100005",
+    "name": "특정 테이블의 샘플 데이터 조회",
+    "sql": "SELECT * FROM OWNER_NAME.TABLE_NAME\nWHERE ROWNUM <= 10",
+    "createdAt": "2025-05-22T03:00:00.005Z"
+  },
+  {
+    "id": "1747882100006",
+    "name": "특정 테이블의 인덱스 조회",
+    "sql": "SELECT index_name, index_type, uniqueness, status\nFROM all_indexes\nWHERE table_name = 'TABLE_NAME' AND owner = 'OWNER_NAME'\nORDER BY index_name",
+    "createdAt": "2025-05-22T03:00:00.006Z"
+  },
+  {
+    "id": "1747882100007",
+    "name": "특정 인덱스의 컬럼 조회",
+    "sql": "SELECT column_name, column_position, descend\nFROM all_ind_columns\nWHERE index_name = 'INDEX_NAME' AND index_owner = 'OWNER_NAME'\nORDER BY column_position",
+    "createdAt": "2025-05-22T03:00:00.007Z"
+  },
+  {
+    "id": "1747882100008",
+    "name": "특정 테이블의 제약조건 조회",
+    "sql": "SELECT constraint_name, constraint_type, status, validated, search_condition\nFROM all_constraints\nWHERE table_name = 'TABLE_NAME' AND owner = 'OWNER_NAME'\nORDER BY constraint_name",
+    "createdAt": "2025-05-22T03:00:00.008Z"
+  },
+  {
+    "id": "1747882100009",
+    "name": "나에게 부여된 모든 권한 조회",
+    "sql": "SELECT * FROM session_privs ORDER BY 1",
+    "createdAt": "2025-05-22T03:00:00.009Z"
+  },
+  {
+    "id": "1747882100010",
+    "name": "데이터베이스 버전 정보",
+    "sql": "SELECT * FROM v$version",
+    "createdAt": "2025-05-22T03:00:00.010Z"
+  },
+  {
+    "id": "1747882100011",
+    "name": "현재 접속한 사용자 정보",
+    "sql": "SELECT user, sys_context('USERENV', 'SESSION_USER') as session_user,\n       sys_context('USERENV', 'CURRENT_SCHEMA') as current_schema\nFROM dual",
+    "createdAt": "2025-05-22T03:00:00.011Z"
+  },
+  {
+    "id": "1747882100012",
+    "name": "모든 스키마의 테이블 개수 통계",
+    "sql": "SELECT owner, COUNT(*) as table_count\nFROM all_tables\nWHERE owner NOT IN ('SYS','SYSTEM','OUTLN','DBSNMP')\nGROUP BY owner\nORDER BY table_count DESC",
+    "createdAt": "2025-05-22T03:00:00.012Z"
+  },
+  {
+    "id": "1747882100013",
+    "name": "접근 가능한 테이블/뷰의 모든 컬럼 정보",
+    "sql": "SELECT owner, table_name, column_name, data_type, data_length, nullable\nFROM all_tab_columns\nWHERE owner IN (\n  SELECT DISTINCT owner \n  FROM all_tab_privs\n  WHERE privilege = 'SELECT' AND grantee = USER\n)\nORDER BY owner, table_name, column_id",
+    "createdAt": "2025-05-22T03:00:00.013Z"
+  },
+  {
+    "id": "1747882100014",
+    "name": "특정 키워드가 포함된 컬럼 찾기",
+    "sql": "SELECT owner, table_name, column_name, data_type, data_length\nFROM all_tab_columns\nWHERE UPPER(column_name) LIKE '%KEYWORD%'\nAND owner NOT IN ('SYS','SYSTEM','OUTLN','DBSNMP')\nORDER BY owner, table_name, column_name",
+    "createdAt": "2025-05-22T03:00:00.014Z"
+  }
+]

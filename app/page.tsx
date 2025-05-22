@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { SqlResultTable } from "@/components/SqlResultTable";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 export default function Home() {
   const [oracleLoading, setOracleLoading] = useState(false);
@@ -100,6 +101,15 @@ export default function Home() {
     <main className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-8">ORACLE DB - Node connection test</h1>
       
+      <div className="mb-6 flex gap-2">
+        <Link href="/sql-editor">
+          <Button className="flex items-center gap-1">
+            <Code className="h-5 w-5" />
+            SQL 쿼리 에디터 바로가기
+          </Button>
+        </Link>
+      </div>
+      
       <Tabs defaultValue="oracledb" className="mb-8">
         <TabsList className="mb-4 w-full md:w-auto">
           <TabsTrigger value="oracledb" className="flex items-center gap-1">
@@ -119,41 +129,33 @@ export default function Home() {
         <TabsContent value="oracledb">
           <Card className="shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle>OracleDB 연결 확인</CardTitle>
+              <CardTitle>OracleDB 연결 테스트</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <Button 
-                onClick={testOracleDbConnection} 
-                disabled={oracleLoading}
-              >
-                {oracleLoading ? '연결 중...' : 'DB 연결 테스트'}
+              <Button onClick={testOracleDbConnection} disabled={oracleLoading}>
+                {oracleLoading ? '테스트 중...' : 'OracleDB 연결 테스트'}
               </Button>
-
+              
               {oracleResult && (
-                <Alert className={`mt-4 ${oracleResult.success ? 'border-green-600 dark:border-green-800' : 'border-destructive'}`} variant={oracleResult.success ? "default" : "destructive"}>
-                  <div className="flex items-start">
-                    {oracleResult.success ? 
-                      <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-500 mr-2 flex-shrink-0" /> : 
-                      <XCircle className="h-5 w-5 mr-2 flex-shrink-0" />
-                    }
-                    <div>
-                      <AlertTitle>
-                        {oracleResult.success ? '성공' : '실패'}
-                      </AlertTitle>
+                <div className="mt-4">
+                  {oracleResult.success ? (
+                    <Alert className="border-green-600 dark:border-green-800">
+                      <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-500 mr-2 flex-shrink-0" />
+                      <AlertTitle>연결 성공</AlertTitle>
                       <AlertDescription>
-                        <p>{oracleResult.message}</p>
-                        {oracleResult.error && (
-                          <div className="mt-2 font-medium">{oracleResult.error}</div>
-                        )}
-                        {oracleResult.data && (
-                          <pre className="mt-2 p-2 bg-muted rounded text-sm">
-                            {JSON.stringify(oracleResult.data, null, 2)}
-                          </pre>
-                        )}
+                        {oracleResult.message}
                       </AlertDescription>
-                    </div>
-                  </div>
-                </Alert>
+                    </Alert>
+                  ) : (
+                    <Alert variant="destructive">
+                      <XCircle className="h-5 w-5 mr-2 flex-shrink-0" />
+                      <AlertTitle>연결 실패</AlertTitle>
+                      <AlertDescription>
+                        {oracleResult.error}
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                </div>
               )}
             </CardContent>
           </Card>
@@ -162,41 +164,33 @@ export default function Home() {
         <TabsContent value="knex">
           <Card className="shadow-sm">
             <CardHeader className="border-b">
-              <CardTitle>Knex Oracle 연결 확인</CardTitle>
+              <CardTitle>Knex OracleDB 연결 테스트</CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
-              <Button 
-                onClick={testKnexOracleConnection} 
-                disabled={knexLoading}
-              >
-                {knexLoading ? '연결 중...' : 'Knex DB 연결 테스트'}
+              <Button onClick={testKnexOracleConnection} disabled={knexLoading}>
+                {knexLoading ? '테스트 중...' : 'Knex OracleDB 연결 테스트'}
               </Button>
-
+              
               {knexResult && (
-                <Alert className={`mt-4 ${knexResult.success ? 'border-green-600 dark:border-green-800' : 'border-destructive'}`} variant={knexResult.success ? "default" : "destructive"}>
-                  <div className="flex items-start">
-                    {knexResult.success ? 
-                      <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-500 mr-2 flex-shrink-0" /> : 
-                      <XCircle className="h-5 w-5 mr-2 flex-shrink-0" />
-                    }
-                    <div>
-                      <AlertTitle>
-                        {knexResult.success ? '성공' : '실패'}
-                      </AlertTitle>
+                <div className="mt-4">
+                  {knexResult.success ? (
+                    <Alert className="border-green-600 dark:border-green-800">
+                      <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-500 mr-2 flex-shrink-0" />
+                      <AlertTitle>연결 성공</AlertTitle>
                       <AlertDescription>
-                        <p>{knexResult.message}</p>
-                        {knexResult.error && (
-                          <div className="mt-2 font-medium">{knexResult.error}</div>
-                        )}
-                        {knexResult.data && (
-                          <pre className="mt-2 p-2 bg-muted rounded text-sm">
-                            {JSON.stringify(knexResult.data, null, 2)}
-                          </pre>
-                        )}
+                        {knexResult.message}
                       </AlertDescription>
-                    </div>
-                  </div>
-                </Alert>
+                    </Alert>
+                  ) : (
+                    <Alert variant="destructive">
+                      <XCircle className="h-5 w-5 mr-2 flex-shrink-0" />
+                      <AlertTitle>연결 실패</AlertTitle>
+                      <AlertDescription>
+                        {knexResult.error}
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                </div>
               )}
             </CardContent>
           </Card>
